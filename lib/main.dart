@@ -31,7 +31,6 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  final ValueNotifier<int> counter = ValueNotifier(1);
   late FruitCatcherGame game; 
 
 
@@ -65,7 +64,7 @@ class _GameScreenState extends State<GameScreen> {
               ),
       
               child: ValueListenableBuilder<int>(
-                valueListenable: counter,
+                valueListenable: game.scoreNotifier,
                 builder: (context, score, child) {
                   return Text(
                     'Score: $score',
