@@ -14,22 +14,47 @@ class AudioManager {
   double get musicVolume => _musicVolume;
   double get sfxVolume => _sfxVolume;
 
-
   Future<void> initialize() async {
-  try {
-    
-  await FlameAudio.audioCache.loadAll([
-    'music/xtremefreddy-game-music-loop-7-145285.mp3',
-    'sfx/bunny_cube98-apple-bite-316785.mp3',
-    'sfx/explosion.mp3',
-    'sfx/jump.mp3',
-  ]);
+    try {
+      await FlameAudio.audioCache.loadAll([
+        'music/xtremefreddy-game-music-loop-7-145285.mp3',
+        'sfx/bunny_cube98-apple-bite-316785.mp3',
+        'sfx/explosion.mp3',
+        'sfx/jump.mp3',
+      ]);
 
-  print('Audio initialized successfully');
-
-  } catch (e) {
-    print('Error initializing audio: $e');
-  }
+      print('Audio initialized successfully');
+    } catch (e) {
+      print('Error initializing audio: $e');
+    }
   }
 
+  void playBackgroundMusic() {
+    if (_isMusicEnabled) {
+      try {
+        FlameAudio.bgm.play(
+          'music/xtremefreddy-game-music-loop-7-145285.mp3',
+          volume: _musicVolume,
+        );
+      } catch (e) {
+        print('Error playing background music: $e');
+      }
+    }
+  }
+
+  void stopBackgroundMusic() {
+    try {
+      FlameAudio.bgm.stop();
+    } catch (e) {
+      print('Error stopping background music: $e');
+    }
+  }
+
+  void pauseBackgroundMusic() {
+    try {
+      FlameAudio.bgm.pause();
+    } catch (e) {
+      print('Error pausing background music: $e');
+    }
+  }
 }
