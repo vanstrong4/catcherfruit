@@ -114,4 +114,26 @@ class AudioManager {
   void toggleSfx() {
     _isSfxEnabled = !_isSfxEnabled;
   }
+
+  void enableMusic() {
+    if (!_isMusicEnabled) {
+      _isMusicEnabled = true;
+      resumeBackgroundMusic();
+    }
+  }
+
+  void disableMusic() {
+    if (_isMusicEnabled) {
+      _isMusicEnabled = false;
+      pauseBackgroundMusic();
+    }
+  }
+
+  void enableSfx() {
+    _isSfxEnabled = true;
+  }
+
+  void disableSfx() {
+    _isSfxEnabled = false;
+  }
 }
