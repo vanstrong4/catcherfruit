@@ -1,7 +1,12 @@
-import 'package:catcherfruit/game/game_screen.dart';
+import 'package:catcherfruit/game/fruit_cacther_game.dart';
+import 'package:catcherfruit/game/managers/audio_managers.dart';
+import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AudioManager().initialize();
+
   runApp(MyApp());
 }
 
@@ -13,6 +18,88 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Evan',
       home: GameScreen(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class GameScreen extends StatefulWidget {
+  const GameScreen({super.key});
+
+  @override
+  State<GameScreen> createState() => _GameScreenState();
+}
+
+class _GameScreenState extends State<GameScreen> {
+  late FruitCatcherGame game; 
+
+
+  @override
+  void initState() {
+    super.initState();
+    game = FruitCatcherGame();
+  }
+
+  @override
+  void dispose() {
+    game.onRemove();
+    super.dispose();
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Stack(
+        children: [
+          GameWidget(game: game),
+          Positioned(
+            top: 50,
+            left: 20,
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.black54,
+                borderRadius: BorderRadius.circular(10),
+              ),
+      
+              child: ValueListenableBuilder<int>(
+                valueListenable: game.scoreNotifier,
+                builder: (context, score, child) {
+                  return Text(
+                    'Score: $score',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+          Positioned(
+            top: 50,
+            right: 20,
+            child: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.music_note, color: Colors.black),
+                  onPressed: () {
+                    AudioManager().toggleMusic();
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.volume_up, color: Colors.black),
+                  onPressed: () {
+                    AudioManager().toggleSfx();
+                  },
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
