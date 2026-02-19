@@ -1,8 +1,12 @@
 import 'package:catcherfruit/game/fruit_cacther_game.dart';
+import 'package:catcherfruit/game/managers/audio_managers.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AudioManager().initialize();
+
   runApp(MyApp());
 }
 
